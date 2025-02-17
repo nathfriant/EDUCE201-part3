@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/serif.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/zenburn.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Analyse des systèmes éducatifs
+
+### Modéliser et simuler un système éducatif
+#### Partie 1 - Une simulation vécue de l'intérieur
+
+Nathanaël Friant
+
+2024-2025
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Simulations déjà vues
+
+- Parabole des polygones
+- Quasi-marché scolaire simple
+
+<img src="https://modelingcommons.org/browse/display_preview/7528" alt="" style="object-fit: scale-down">
+
+
+
+<aside class="notes"><p>Nous avons déjà vu ensemble des simulations multi-agents : </p>
+<ul>
+<li>La parabole des polygones, où de la ségrégation se créait dans une société peuplée de polygones ayant des préférences</li>
+<li>Le modèle du quasi-marché scolaire simple, où des individus choisissaient une école.</li>
+</ul>
+<p>Avec ces modèles, vous observiez ce qu&#39;il se passait dans un petit monde artificiel. </p>
+<p>Je pense qu&#39;il est intéressant de faire l&#39;expérience de vivre cela en étant vous-mêmes des acteurs et en posant des choix. Cela vous permettra de vivre la modélisation qu&#39;on fait du système. C&#39;est un des grands objectifs de ce cours: j&#39;aimerais que vous soyez plutôt capables de modéliser un système et de le comprendre, plutôt que d&#39;en retenir une succession de détails. </p>
+<p>On va donc faire l&#39;expérience du quasi-marché scolaire simple en vous mettant, vous, comme acteurs. On va essayer de vivre la simulation de l&#39;intérieur. </p>
+<p>C&#39;est la première fois que je tente l&#39;activité, et il se peut qu&#39;elle ne marche pas comme prévu. Mais au moins, on aura essayé. C&#39;est important que vous jouiez le jeu pour qu&#39;on puisse observer le système en fonctionnement et en analyser les conséquences.</p>
+</div></aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Vivre ça de l'intérieur
+
+<img src="EDUCE201/Capture d’écran 2025-02-17 à 14.46.42.png" alt="" style="object-fit: scale-down">
+
+Notes:
+- Un forum sur l'UV
+- Des profils de familles attribués aléatoirement
+- 3 écoles aux profils contrastés
+- Un choix à poser et à expliquer
+- Une fiche à me transmettre
+- Trois tours en 12 jours
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Sur l'UV
+
+<img src="EDUCE201/Capture d’écran 2025-02-17 à 14.52.57.png" alt="" style="object-fit: scale-down">
+
+
+<aside class="notes"><p>tout ça est sur l&#39;UV et nous allons le parcourir ensemble. Cliquons sur &quot;Simulation des choix scolaires&quot;</p>
+</div></aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Un forum
+
+<img src="EDUCE201/Capture d’écran 2025-02-17 à 14.56.27.png" alt="" style="object-fit: scale-down">
+
+<aside class="notes"><p>Si vous cliquez sur &quot;Simulation des choix scolaires&quot;, vous arrivez dans un forum qui regroupe entre 25 et 28 étudiant·es du cours choisis aléatoirement. Vous représentez une population de parents qui doivent choisir une école pour leur enfant. </p>
+<ul>
+<li>En tant que familles, vous avez certaines caractéristiques</li>
+<li>Il y a 3 écoles possibles dans vos choix, qui ont elles aussi certaines caractéristiques.</li>
+</ul>
+<p>Dans le forum, vous allez devoir poster qui vous êtes, vos choix, et la justification de vos choix: </p>
+<p>Format de réponse attendu :</p>
+<ul>
+<li>Mon profil : [Favorisée/Moyenne/Défavorisée]</li>
+<li>École choisie : [A/B/C]</li>
+<li>Justification : Expliquer pourquoi ce choix en lien avec :<ul>
+<li>Votre profil et seuil de tolérance</li>
+<li>La composition actuelle de l&#39;école</li>
+<li>Les caractéristiques de l&#39;école (options, réputation...)</div></li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Ce que vous direz dans le forum
+
+#### Tour 1 
+	- Mon profil : [Favorisée/Moyenne/Défavorisée]
+	- École choisie : [A/B/C]
+	- Justification : Expliquer pourquoi ce choix en lien avec :
+		- Votre profil et seuil de tolérance
+		- La composition actuelle de l'école
+		- Les caractéristiques de l'école (options, réputation...)
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Ce que vous direz dans le forum (2)
+
+#### Tours 2 et 3
+	- Mon profil : [Favorisée/Moyenne/Défavorisée]
+	- École actuelle : [A/B/C]
+	- Décision : [Je reste / Je change pour l'école X]
+	- Justification :
+		- Si reste : pourquoi la nouvelle composition reste acceptable
+		- Si change : pourquoi la nouvelle composition n'est plus acceptable + choix de la nouvelle école
+
+Vous pouvez bien sûr aussi discuter de tout ce qui émergerait de l'activité...
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Des profils de familles (1)
+
+<img src="Capture d’écran 2025-02-17 à 15.08.57.png" alt="" style="object-fit: scale-down">
+
+
+<aside class="notes"><p>Quand vous allez cliquer sur le lien, vous serez renvoyés vers une page présentant un &quot;artifact&quot; du LLM (Large Language Model, bref, de l&#39;intelligence artificielle générative) Claude. Comme les étudiants, ce sont des modèles que j&#39;utilise de plus en plus, notamment pour créer des visualisations comme celles-ci (une fiche en fonction de la description que j&#39;en ai donnée) ou pour écrire du code alors que mes compétences en programmation sont très limitées. J&#39;ai choisi de vous donner ce lien pour être transparent quant à l&#39;utilisation de ce LLM dans la création de ces documents. C&#39;est aussi ma philosophie quant à votre utilisation de ces outils en tant qu&#39;étudiant·es dans les travaux que vous me remettriez: l&#39;important, c&#39;est de rester transparents dans l&#39;utilisation que vous en faites.</p>
+<p><strong>Il suffit de cliquer sur &quot;show content&quot; pour voir les profils.</strong></p>
+</div></aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Des profils de familles (2)
+
+<img src="Capture d’écran 2025-02-17 à 15.09.24.png" alt="" style="object-fit: scale-down">
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Des profils de familles (3)
+
+<img src="Capture d’écran 2025-02-17 à 15.09.58.png" alt="" style="object-fit: scale-down">
+
+
+<aside class="notes"><p>Un profil de famille a été attribué à chacun·e d&#39;entre vous. Pour aller les voir, il faut cliquer sur &quot;rôle dans la simulation sur le forum Moodle&quot;</p>
+</div></aside></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Rôles dans la simulation
+
+<img src="Capture d’écran 2025-02-17 à 15.26.00.png" alt="" style="width: 300px; object-fit: fill">
+
+
+<aside class="notes"><p>Vous ouvrez un fichier pdf mettant en regard les matricules avec les rôles attribués. Vous connaissez maintenant le profil de votre famille, vos critères de choix, il vous reste à faire un choix d&#39;école et à le justifier.</p>
+</div></aside></script></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Profils des écoles disponibles (1)
+
+<img src="Capture d’écran 2025-02-17 à 15.34.22.png" alt="" style="object-fit: scale-down">
+
+<aside class="notes"><p>Ici aussi, j&#39;ai travaillé avec Claude pour créer rapidement des fiches comme celles-ci.</p>
+<p>Il y a 3 écoles. L&#39;idée n&#39;est pas ici de discuter sur le détail ou le réalisme des caractéristiques des écoles, mais simplement de faire un choix en fonction de votre profil de famille et de le poster sur le forum. Vous verrez ainsi peut-être (ou pas) apparaître de la séparation entre les publics.</p>
+</div></aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Profils des écoles disponibles (2)
+
+<img src="Capture d’écran 2025-02-17 à 15.35.04.png" alt="" style="object-fit: scale-down">
+</div></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Profils des écoles disponibles (3)
+
+<img src="Capture d’écran 2025-02-17 à 15.35.30.png" alt="" style="object-fit: scale-down">
+</div></script></section></section><section ><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Base de données
+
+<img src="Capture d’écran 2025-02-17 à 15.39.46.png" alt="" style="object-fit: scale-down">
+
+
+<aside class="notes"><p>C&#39;est simplement pour que je centralise les choix et que je recalcule les compositions de chacune des écoles. Vous dites ici la même chose que dans le forum. Une fois cela fait, je télécharge toutes vos réponses et je calcule les nouvelles compositions d&#39;écoles.</p>
+</div></aside></script></section><section data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Base de données (2)
+
+<img src="Capture d’écran 2025-02-17 à 15.42.42.png" alt="" style="object-fit: scale-down">
+</div></script></section></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Tours 2 et 3
+
+Rebelote en fonction des nouvelles compositions que j'aurai calculées 🤞
+- Vous restez ou vous partez? 
+- Si vous partez, pour quelle école? 
+- Si vous partez, pourquoi?
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Timing
+
+- Tour 1 jusqu'au samedi 22 février
+- Tour 2 jusqu'au vendredi 28 février
+- Tour 3 jusqu'au 5 mars
+
+Les résultats des compositions d'écoles seront communiqués dans les forums.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### Questions?
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### On commence? 
+
+<aside class="notes"><p>Vous pouvez commencer tout de suite: </p>
+<ul>
+<li>Allez sur l&#39;UV</li>
+<li>Prenez connaissance de vos caractéristiques et de celles des écoles</li>
+<li>Postez sur le forum votre choix d&#39;école</li>
+<li>Remplissez la base de données</li>
+</ul>
+<p>Quelques questions que l&#39;on peut se poser: </p>
+<ul>
+<li>Qu&#39;est-ce que ça changerait si on changeait un peu les règles d&#39;inscription (par exemple, une notion de distance à l&#39;école et de priorité)? </li>
+<li>Et si les écoles étaient également capables de choisir? </li>
+<li>Et si les écoles pouvaient modifier leur image d&#39;une façon ou d&#39;une autre (peu importe le public de l&#39;école)? </li>
+<li>Pour les étudiant·es en sciences psychologiques: pensez-vous à des effets psychologiques ou sociaux que pourraient avoir ces différents systèmes ou ces différentes modalités d&#39;organisation? Si l&#39;on comparait par exemple la Belgique avec la France, l&#39;Angleterre, la Suède, la Finlande... Verriez-vous les mêmes effets psycho-sociaux sur les élèves et leurs familles?</div></li>
+</ul>
+</aside></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+		  RevealMenu,
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":true,"showNotes":true,"transition":"slide","transitionSpeed":"fast"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
